@@ -1,5 +1,19 @@
 #!/bin/sh
 
+echo "Applying and pushing tag v$1"
+
+EXISTING_TAGS=$(git tag --points-at HEAD)
+
+if [[ -z $EXISTING_TAGS ]]; then
+  echo "Tags already exist on HEAD: $EXISTING_TAGS"
+  exit 1
+fi
+
+echo "Tagging commit"
+
+git tag -a -m "Release v$1" "v$1"
+
+commit=$(git rev-parse HEAD)
 dt=$(date '+%Y-%m-%dT%H:%M:%SZ')
 full_name=$GITHUB_REPOSITORY
 git_refs_url=$(jq .repository.git_refs_url $GITHUB_EVENT_PATH | tr -d '"' | sed 's/{\/sha}//g')

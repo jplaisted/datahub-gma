@@ -7,9 +7,10 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: ./gradlew gitTag
+    - id: get-tag
+      run: echo "::set-output name=tag::$(./gradlew -q getVersion)"
       shell: bash
-    - run: ./gradlew gitPush
+    - run: echo Got version ${{ steps.get-tag.outputs.tag }}
       shell: bash
-    - run: echo "::set-output name=tag::$(git tag --points-at HEAD)"
+    - run: ./gradle/gradle-push.sh ${{ steps.get-tag.outputs.tag }}
       shell: bash

@@ -67,3 +67,7 @@ task gitPush(type: Exec) {
   commandLine "./gradle/git-push.sh"
   doLast { println "Pushed tags" }
 }
+
+task getVersion() {
+  println version
+}
