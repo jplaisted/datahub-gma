@@ -11,5 +11,5 @@ runs:
       shell: bash
     - run: ./gradlew gitPush
       shell: bash
-    - run: echo "::set-output name=tag::$(./gradlew printVersion)"
+    - run: echo "::set-output name=tag::$(git tag --points-at HEAD)"
       shell: bash

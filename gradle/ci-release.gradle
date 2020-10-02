@@ -1,9 +1,4 @@
-// TODO actually hook up to a CI. Until we hook up a CI follow these steps:
-// 1. Check out the repo and sync to the commit you want to release.
-// 2. Tag the commit by running `git tag -a -m "Release v$version" "v$version"`, replacing $version with the semver.
-// 3. Push the tag by running `git push --tags`
-// 4. Upload to bintray by running `./gradlew bintrayUploadAll`.
-// 5. Go to GitHub and make a release from the tag.
+// CI done via ./github/workflows/tag-version.yml.
 
 // Task to fail fast and clearly if required properties are not set.
 task verifyBintrayProperties {
@@ -34,13 +29,22 @@ task ciPerformRelease {
   dependsOn "gitTag", "gitPush", "bintrayUploadAll"
 }
 
+task getTag(type: Exec) {
+  commandLine "/bin/bash", "-c", "git tag --points-at HEAD"
+  standardOutput = new ByteArrayOutputStream()
+  ext.output = {
+    return standardOutput.toString()
+  }
+}
+
 task gitTag {
   description = "Creates annotated tag 'v$version'"
+  dependsOn getTag
 
   doLast {
-    println "Setting Git user and email to GitHub CI"
-    exec { commandLine "git", "config", "user.email", "noreply@github.com" }
-    exec { commandLine "git", "config", "user.name", "GitHub Releaser" }
+    if (!getTag.output().isEmpty()) {
+      throw new Exception("Cannot tag commit with existing tags: " + getTag.output())
+    }
     println "Creating tag v$version"
     exec { commandLine "git", "tag", "-a", "-m", "Release $version", "v$version" }
     println "Created tag v$version"
@@ -51,13 +55,12 @@ task gitPush(type: Exec) {
   description = "Pushes tags by running 'git push --tags'. Hides secret key from git push output."
   mustRunAfter "gitTag" //tag first, push later
 
-  doFirst { println "Pushing tag v$version" }
-  commandLine "./gradle/git-push.sh", "v$version"
-  doLast { println "Pushed tag v$version" }
-}
-
-task printVersion {
   doFirst {
-    println version
+    if (System.getenv('GIT_SECRET') == null) {
+      println 'Need the GIT_SECRET environment variable to be set in order to push branches!'
+    }
   }
+  doFirst { println "Pushing tags" }
+  commandLine "./gradle/git-push.sh"
+  doLast { println "Pushed tags" }
 }
