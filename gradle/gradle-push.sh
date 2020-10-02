@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "Applying and pushing tag v$1"
 
