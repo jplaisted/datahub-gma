@@ -1,11 +1,27 @@
 #!/bin/sh
 
-#Git push is implemented in the script to make sure we are not leaking GH key to the output
-#Expects 'GIT_SECRET' env variable to be in format: user:github_access_token,
-#for example: mockitoguy:qq43234xc23x23d24d
+dt=$(date '+%Y-%m-%dT%H:%M:%SZ')
+full_name=$GITHUB_REPOSITORY
+git_refs_url=$(jq .repository.git_refs_url $GITHUB_EVENT_PATH | tr -d '"' | sed 's/{\/sha}//g')
+echo "$dt: **pushing tag $new to repo $full_name"
 
-echo "Running git push without output for security. If it fails make sure that GIT_SECRET env variable is set."
-git push --quiet https://$GIT_SECRET@github.com/linkedin/datahub-gma.git --tags > /dev/null 2>&1
-EXIT_CODE=$?
-echo "'git push --quiet' exit code: $EXIT_CODE"
-exit $EXIT_CODE
+git_refs_response=$(
+curl -s -X POST $git_refs_url \
+-H "Authorization: token $GITHUB_TOKEN" \
+-d @- << EOF
+{
+  "ref": "refs/tags/$new",
+  "sha": "$commit"
+}
+EOF
+)
+
+git_ref_posted=$( echo "${git_refs_response}" | jq .ref | tr -d '"' )
+
+echo "::debug::${git_refs_response}"
+if [ "${git_ref_posted}" = "refs/tags/${new}" ]; then
+  exit 0
+else
+  echo "::error::Tag was not created properly."
+  exit 1
+fi
