@@ -45,6 +45,9 @@ task gitTag {
     if (!getTag.output().isEmpty()) {
       throw new Exception("Cannot tag commit with existing tags: " + getTag.output())
     }
+    println "Setting Git user and email to GitHub CI"
+    exec { commandLine "git", "config", "user.email", "noreply@github.com" }
+    exec { commandLine "git", "config", "user.name", "GitHub Releaser" }
     println "Creating tag v$version"
     exec { commandLine "git", "tag", "-a", "-m", "Release $version", "v$version" }
     println "Created tag v$version"
