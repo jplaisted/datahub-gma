@@ -31,18 +31,10 @@ curl -s -X POST $git_refs_url \
 EOF
 )
 
-echo "===response"
-echo "$git_refs_response"
-echo "==="
-
 git_ref_posted=$( echo "${git_refs_response}" | jq .ref | tr -d '"' )
 
-echo "===ref"
-echo "$git_ref_posted"
-echo "==="
-
 echo "::debug::${git_refs_response}"
-if [ "${git_ref_posted}" = "refs/tags/${new}" ]; then
+if [ "${git_ref_posted}" = "refs/tags/${tag}" ]; then
   exit 0
 else
   echo "::error::Tag was not created properly."
