@@ -1,0 +1,28 @@
+name: Tag Version
+on:
+  push:
+    branches:
+      - 'release/**'
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Prevents more than once action from running at once, ensuring tags are atomic.
+      - name: Turnstyle
+        uses: softprops.turnstyle@v1
+        env:
+          - GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tag
+        uses: ./.github/actions/tag-version.yml
+      - name: Slack failure notification
+        if: failure() && github.event_name == 'push'
+        uses: kpritam/slack-job-status-action@v1
+        with:
+          job-status: ${{ job.status }}
+          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
+          channel: github-activities

@@ -59,8 +59,11 @@ publishing {
   }
 }
 
-// Enable a single, top level publishToMavenLocal which publishes everything.
-publishToMavenLocal.dependsOn(project.rootProject.publishToMavenLocal)
+publishToMavenLocal {
+  doLast {
+    println "Published $project.name $version"
+  }
+}
 
 
 bintray {

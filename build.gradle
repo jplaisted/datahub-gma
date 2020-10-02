@@ -86,7 +86,6 @@ project.ext.externalDependency = [
 ]
 
 apply plugin: 'org.shipkit.shipkit-auto-version'
-println "Building version $version"
 
 allprojects {
   group = "com.linkedin.datahub-gma"
@@ -94,11 +93,6 @@ allprojects {
   apply plugin: 'idea'
   apply plugin: 'eclipse'
   apply plugin: 'checkstyle'
-}
-
-// Marker task which does nothing on its own, but all other sub-publishToMavenLocal tasks can be dependants, so you can
-// run this top level task to publish everything. See java-publishing.gradle.
-task publishToMavenLocal {
 }
 
 if (!project.hasProperty('disableShipkit')) {

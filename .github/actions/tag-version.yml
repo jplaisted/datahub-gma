@@ -1,0 +1,14 @@
+name: 'Tag Version'
+description: 'Tags the commit with the latest version.'
+outputs:
+  version:
+    description: "The version tag this created."
+    value: ${{ steps.get-tag.outputs.tag }}
+runs:
+  using: "composite"
+    - run: ./gradlew gitTag
+      shell: bash
+    - run: ./gradlew gitPush
+      shell: bash
+    - run: echo "::set-output name=tag::$(./gradlew printVersion)"
+      shell: bash

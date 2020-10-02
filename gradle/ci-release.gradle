@@ -19,7 +19,7 @@ task verifyBintrayProperties {
 
 task bintrayUploadAll {
   description = "Runs 'bintrayUpload' tasks from all projects"
-  mustRunAfter gitPush //git push is easier to rollback so we run it first
+  mustRunAfter "gitPush" //git push is easier to rollback so we run it first
 }
 
 allprojects {
@@ -54,4 +54,10 @@ task gitPush(type: Exec) {
   doFirst { println "Pushing tag v$version" }
   commandLine "./gradle/git-push.sh", "v$version"
   doLast { println "Pushed tag v$version" }
+}
+
+task printVersion {
+  doFirst {
+    println version
+  }
 }
