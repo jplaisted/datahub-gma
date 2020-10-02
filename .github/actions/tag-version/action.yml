@@ -6,6 +6,7 @@ outputs:
     value: ${{ steps.get-tag.outputs.tag }}
 runs:
   using: "composite"
+  steps:
     - run: ./gradlew gitTag
       shell: bash
     - run: ./gradlew gitPush
