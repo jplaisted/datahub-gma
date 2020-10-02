@@ -4,7 +4,7 @@ echo "Applying and pushing tag v$1"
 
 EXISTING_TAGS=$(git tag --points-at HEAD)
 
-if [[ -z "$EXISTING_TAGS" ]]; then
+if [[ "$EXISTING_TAGS" ]]; then
   echo "Tags already exist on HEAD: $EXISTING_TAGS"
   exit 1
 fi
