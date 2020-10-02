@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v2
       # Prevents more than once action from running at once, ensuring tags are atomic.
       - name: Turnstyle
-        uses: softprops.turnstyle@v1
+        uses: softprops/turnstyle@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Tag
