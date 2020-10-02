@@ -11,7 +11,7 @@ fi
 
 echo "Tagging commit"
 
-git tag -a -m "Release v$1" "v$1"
+git tag "v$1"
 
 commit=$(git rev-parse HEAD)
 dt=$(date '+%Y-%m-%dT%H:%M:%SZ')
