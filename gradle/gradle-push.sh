@@ -3,6 +3,9 @@
 tag="v$1"
 echo "Applying and pushing tag $tag"
 
+echo "===branches"
+git branch -a
+echo "==="
 echo "===recent history"
 git log --oneline -n 10
 echo "==="
