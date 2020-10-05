@@ -1,4 +1,4 @@
-name: Tag Version
+name: Create GitHub Version
 on:
   push:
     branches:
@@ -20,8 +20,7 @@ jobs:
         uses: softprops/turnstyle@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #  Done by changelog?
-#      - name: Tag
-#        uses: ./.github/actions/tag-version
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tag
+        uses: ./.github/actions/gh-version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
