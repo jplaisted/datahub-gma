@@ -20,15 +20,8 @@ jobs:
         uses: softprops/turnstyle@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Tag
-        uses: ./.github/actions/tag-version
-        env:
-          GIT_SECRET: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      - name: Slack failure notification
-#        if: failure() && github.event_name == 'push'
-#        uses: kpritam/slack-job-status-action@v1
-#        with:
-#          job-status: ${{ job.status }}
-#          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
-#          channel: github-activities
+      #  Done by changelog?
+#      - name: Tag
+#        uses: ./.github/actions/tag-version
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

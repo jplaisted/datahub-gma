@@ -9,7 +9,8 @@ buildscript {
     classpath 'com.commercehub.gradle.plugin:gradle-avro-plugin:0.8.1'
     classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.1.2.RELEASE'
     classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
-    classpath "org.shipkit:shipkit-auto-version:0.0.22"
+    classpath "org.shipkit:shipkit-auto-version:0.0.44"
+    classpath "org.shipkit:shipkit-changelog:0.0.45"
   }
 }
 
@@ -85,28 +86,18 @@ project.ext.externalDependency = [
     'testng': 'org.testng:testng:6.9.9'
 ]
 
-apply plugin: 'org.shipkit.shipkit-auto-version'
+apply from: "./gradle/release.gradle"
 
 allprojects {
-  group = "com.linkedin.datahub-gma"
-
   apply plugin: 'idea'
   apply plugin: 'eclipse'
   apply plugin: 'checkstyle'
-}
-
-if (!project.hasProperty('disableShipkit')) {
-  apply from: file("gradle/ci-release.gradle")
 }
 
 subprojects { sp ->
   apply plugin: 'maven'
 
   plugins.withType(JavaPlugin) {
-    if (!project.hasProperty('disableShipkit')) {
-      sp.apply from: "$rootDir/gradle/java-publishing.gradle"
-    }
-
     dependencies {
       testCompile externalDependency.testng
     }

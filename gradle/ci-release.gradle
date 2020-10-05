@@ -45,26 +45,23 @@ task gitTag {
     if (!getTag.output().isEmpty()) {
       throw new Exception("Cannot tag commit with existing tags: " + getTag.output())
     }
-    println "Setting Git user and email to GitHub CI"
-    exec { commandLine "git", "config", "user.email", "noreply@github.com" }
-    exec { commandLine "git", "config", "user.name", "GitHub Releaser" }
     println "Creating tag v$version"
-    exec { commandLine "git", "tag", "-a", "-m", "Release $version", "v$version" }
+    exec { commandLine "git", "tag", "v$version" }
     println "Created tag v$version"
   }
 }
 
 task gitPush(type: Exec) {
   description = "Pushes tags by running 'git push --tags'. Hides secret key from git push output."
-  mustRunAfter "gitTag" //tag first, push later
+  mustRunAfter "gitTag" // tag first, push later
 
   doFirst {
-    if (System.getenv('GIT_SECRET') == null) {
-      println 'Need the GIT_SECRET environment variable to be set in order to push branches!'
+    if (System.getenv('GITHUB_TOKEN') == null) {
+      println 'Need the GITHUB_TOKEN environment variable to be set in order to push branches!'
     }
   }
   doFirst { println "Pushing tags" }
-  commandLine "./gradle/git-push.sh"
+  commandLine "./gradle/git-push.sh", "v$version"
   doLast { println "Pushed tags" }
 }
 

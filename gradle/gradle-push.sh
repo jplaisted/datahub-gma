@@ -3,10 +3,8 @@
 tag="v$1"
 echo "Applying and pushing tag $tag"
 
-echo "===branches"
-git branch -a
-echo "==="
-echo "===recent history"
+echo "current branch" "$(git branch --show-current)"
+echo "=== recent history"
 git log --oneline -n 10
 echo "==="
 
@@ -22,10 +20,9 @@ echo "Tagging commit"
 git tag "$tag"
 
 commit=$(git rev-parse HEAD)
-dt=$(date '+%Y-%m-%dT%H:%M:%SZ')
 full_name=$GITHUB_REPOSITORY
 git_refs_url=$(jq .repository.git_refs_url $GITHUB_EVENT_PATH | tr -d '"' | sed 's/{\/sha}//g')
-echo "$dt: **pushing tag $tag to repo $full_name"
+echo "pushing tag $tag to repo $full_name"
 
 git_refs_response=$(
 curl -s -X POST $git_refs_url \
