@@ -88,6 +88,8 @@ project.ext.externalDependency = [
 
 apply from: "./gradle/release.gradle"
 
+// TODO remove me
+
 allprojects {
   apply plugin: 'idea'
   apply plugin: 'eclipse'
