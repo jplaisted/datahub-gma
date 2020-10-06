@@ -9,6 +9,7 @@ if (!project.hasProperty('disableShipkit')) {
       if (System.getenv("GITHUB_TOKEN") == null) {
         throw new Exception("Environment variable GITHUB_TOKEN not set.");
       }
+      println "Using repository " + System.getenv("GITHUB_REPOSITORY")
     }
   }
 
@@ -16,13 +17,13 @@ if (!project.hasProperty('disableShipkit')) {
     dependsOn checkGitHubToken
     previousRevision = "v" + project.ext.'shipkit-auto-version.previous-version'
     readOnlyToken = System.getenv("GITHUB_TOKEN")
-    repository = "jplaisted/datahub-gma" // TODO
+    repository = System.getenv("GITHUB_REPOSITORY")
   }
 
   tasks.named("githubRelease") {
     dependsOn tasks.named("generateChangelog")
     dependsOn checkGitHubToken
-    repository = "jplaisted/datahub-gma" // TODO
+    repository = System.getenv("GITHUB_REPOSITORY")
     changelog = tasks.named("generateChangelog").get().outputFile
     writeToken = System.getenv("GITHUB_TOKEN")
   }

@@ -3,6 +3,7 @@
 tag="v$1"
 echo "Applying and pushing tag $tag"
 
+# For debugging
 echo "current branch" "$(git branch --show-current)"
 echo "=== recent history"
 git log --oneline -n 10
