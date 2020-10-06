@@ -12,8 +12,6 @@ runs:
       shell: bash
     - run: echo Got version ${{ steps.get-tag.outputs.tag }}
       shell: bash
-    - run: $(exit 42); echo "$?" # TODO remove, testing if a step fails then action fails
-      shell: bash
     - run: ./gradlew bintrayUploadAll -Pbintray.dryRun
       shell: bash
     - run: ./gradlew githubRelease

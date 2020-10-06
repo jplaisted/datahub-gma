@@ -15,7 +15,7 @@ jobs:
         with:
           # Needed to get all tags
           fetch-depth: 0
-      - name: Tag
+      - name: Release
         uses: ./.github/actions/gh-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
