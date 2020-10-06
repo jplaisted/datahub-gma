@@ -15,11 +15,6 @@ jobs:
         with:
           # Needed to get all tags
           fetch-depth: 0
-      # Prevents more than once action from running at once, ensuring tags are atomic.
-      - name: Turnstyle
-        uses: softprops/turnstyle@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Tag
         uses: ./.github/actions/gh-version
         env:

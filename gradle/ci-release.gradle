@@ -1,4 +1,4 @@
-// CI done via ./github/workflows/tag-version.yml.
+// CI done via ./github/workflows/gh-version.yml.
 
 // Task to fail fast and clearly if required properties are not set.
 task verifyBintrayProperties {
