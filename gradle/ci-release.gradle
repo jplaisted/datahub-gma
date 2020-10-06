@@ -26,7 +26,7 @@ allprojects {
 
 task ciPerformRelease {
   description = "Performs the release, intended to be ran on CI"
-  dependsOn "gitTag", "gitPush", "bintrayUploadAll"
+  dependsOn "gitTag", "gitPush", "githubRelease", "bintrayUploadAll"
 }
 
 task getTag(type: Exec) {

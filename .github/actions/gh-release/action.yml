@@ -14,5 +14,5 @@ runs:
       shell: bash
     - run: ./gradlew build bintrayUploadAll -Pbintray.dryRun
       shell: bash
-    - run: ./gradlew githubRelease
+    - run: ./gradlew ciPerformRelease
       shell: bash
