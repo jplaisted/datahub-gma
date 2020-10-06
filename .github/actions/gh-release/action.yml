@@ -12,7 +12,7 @@ runs:
       shell: bash
     - run: echo Got version ${{ steps.get-tag.outputs.tag }}
       shell: bash
-    - run: ./gradlew bintrayUploadAll -Pbintray.dryRun
+    - run: ./gradlew build bintrayUploadAll -Pbintray.dryRun
       shell: bash
     - run: ./gradlew githubRelease
       shell: bash
