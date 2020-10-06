@@ -1,4 +1,4 @@
-name: Create GitHub Version
+name: Create GitHub Release
 on:
   push:
     branches:
@@ -16,6 +16,6 @@ jobs:
           # Needed to get all tags
           fetch-depth: 0
       - name: Tag
-        uses: ./.github/actions/gh-version
+        uses: ./.github/actions/gh-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
