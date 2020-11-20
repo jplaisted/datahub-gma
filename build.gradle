@@ -70,15 +70,19 @@ project.ext.externalDependency = [
 apply plugin: 'com.diffplug.spotless'
 apply from: "./gradle/release.gradle"
 
-// TODO expand this to all projects and then delete this allow list. This list is letting us fix errors over time rather
-// than in one big change.
-def wErrorProjects = [
-    project(':core-models'),
-    // project(':dao-api'),
-    // project(':dao-api-impl'),
-    // project(':restli-resources'),
-    project(':testing'),
-    project(':validators')
+// TODO get this list to 0 and then delete this allow list. This list is letting us fix errors over time rather than in
+// one big change. This is a block list so new modules automatically have wError enabled.
+def skipWErrorProjects = [
+    project(':dao-impl:ebean-dao'),
+    project(':dao-impl:elasticsearch-dao'),
+    project(':dao-impl:elasticsearch-dao-7'),
+    project(':dao-impl:neo4j-dao'),
+    project(':gradle-plugins:metadata-annotations-lib'),
+    project(':gradle-plugins:metadata-annotations-schema'),
+    project(':gradle-plugins:metadata-annotations-test-models'),
+    project(':gradle-plugins:metadata-events-generator-lib'),
+    project(':gradle-plugins:metadata-events-generator-plugin'),
+    project(':restli-resources'),
 ]
 
 allprojects {
@@ -87,7 +91,7 @@ allprojects {
   apply plugin: 'checkstyle'
 
   gradle.projectsEvaluated {
-    if (wErrorProjects.contains(project)) {
+    if (!skipWErrorProjects.contains(project)) {
       tasks.withType(JavaCompile) {
         options.compilerArgs << "-Xlint:all" << "-Werror" <<
             "-Xlint:-deprecation" << // TODO
